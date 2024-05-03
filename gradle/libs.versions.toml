@@ -1,0 +1,37 @@
+[versions]
+agp = "8.2.2"
+appcompat = "1.6.1"
+asm = "9.6"
+detekt = "1.23.5"
+kotlin = "1.9.22"
+typesafe = "1.4.2"
+junit = "5.7.1"
+plugin-publish = "1.2.1"
+
+
+[plugins]
+agp = { id = "com.android.application", version.ref = "agp" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "plugin-publish" }
+methodhook = { id = "dev.aleksrychkov.methodhook", version = "0.1" }
+
+
+[libraries]
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+
+agp = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+agp-api = { group = "com.android.tools.build", name = "gradle-api", version.ref = "agp" }
+
+asm = { group = "org.ow2.asm", name = "asm", version.ref = "asm" }
+asm-commons = { group = "org.ow2.asm", name = "asm-commons", version.ref = "asm" }
+asm-util = { group = "org.ow2.asm", name = "asm-util", version.ref = "asm" }
+
+typesafe = { group = "com.typesafe", name = "config", version.ref = "typesafe" }
+
+juint = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
+
+
+[bundles]
+asm = ["asm", "asm-commons", "asm-util"]

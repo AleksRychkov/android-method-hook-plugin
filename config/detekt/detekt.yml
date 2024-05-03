@@ -1,0 +1,23 @@
+build:
+  excludeCorrectable: false
+
+config:
+  validation: true
+  warningsAsErrors: false
+  checkExhaustiveness: false
+
+complexity:
+  active: true
+  LongParameterList:
+    active: true
+    functionThreshold: 5
+    constructorThreshold: 10
+    ignoreDefaultParameters: false
+    ignoreDataClasses: true
+    ignoreAnnotatedParameter: [ ]
+
+style:
+  active: true
+  MaxLineLength:
+    active: true
+    ignoreAnnotated: ['Test']
