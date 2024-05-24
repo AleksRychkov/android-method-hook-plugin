@@ -31,7 +31,7 @@ application's build.gradle[.kts] file
 activity {
     superClass = "android.app.Activity"
     methods = [
-        "onCreate(Landroid/os/Bundle;)V"        
+        "onCreate"        
     ]
     packageId = "org.example"
     beginMethodWith = "org.example.MethodHook.start"
@@ -109,7 +109,7 @@ You can define multiple configs inside one file. Start a config with a name
 activity {
     superClass = "android.app.Activity"
     methods = [
-        "onCreate(Landroid/os/Bundle;)V"        
+        "onCreate"        
     ]
     packageId = "org.example"
     beginMethodWith = "org.example.MethodHook.start"
@@ -118,7 +118,7 @@ activity {
 frgament {
     exactClass = "org.example.SomeFragment"
     methods = [
-        "onResume()V"        
+        "onResume"        
     ]
     beginMethodWith = "org.example.MethodHook.start"
     endMethodWith = "org.example.MethodHook.end"
@@ -131,9 +131,8 @@ Each config supports following options:
   subclasses, e.g. `android.app.Activity`. Must not be defined along with `exactClass`.
 * `exactClass`: Specifies the exact class (__canonical name__) for which the plugin should target methods,
   `e.g. org.example.SomeClass`. Must not be defined along with `superClass`.
-* `methods`: Specifies an array of methods (identified by their names
-  and [descriptors](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3)) where the plugin will
-  inject additional code, e.g. `onCreate(Landroid/os/Bundle;)V`.
+* `methods`: Specifies an array of methods (identified by their names) where the plugin will
+  inject additional code, e.g. `onCreate`.
 * `beginMethodWith`: Specifies a reference to a method to be injected at the beginning of instructed methods,
   e.g. `org.example.MethodHook.start`.
 * `endMethodWith`: Specifies a reference to a method to be injected at the end of instructed methods,
@@ -229,7 +228,7 @@ public class MethodHook {
 
 * first argument is a runtime class, `this.getClass().getName()`, e.g. `org.example.MainActivity`.
 * second argument is an actual class where method was called, e.g. `org.example.AbstractActivity`.
-* third argument is a method name, e.g. `onCreate`.
+* third argument is a method name, arguments, return type, e.g. `onCreate(Bundle)->void`.
 
 Specify created methods in config
 
