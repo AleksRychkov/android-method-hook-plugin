@@ -24,7 +24,8 @@ plugins {
 
 ### Quick start
 
-Create `methodhook_activity.conf` file to instruct plugin what and where to inject calls. You can place it adjacent to
+Create `methodhook_activity.conf` file to instruct plugin what and where to inject calls. You can
+place it adjacent to
 application's build.gradle[.kts] file
 
 ```conf
@@ -39,7 +40,8 @@ activity {
 }
 ```
 
-Add plugin's configuration to an Android application's `build.gradle[.kts]` file. In `addConfig` method specify a path
+Add plugin's configuration to an Android application's `build.gradle[.kts]` file. In `addConfig`
+method specify a path
 to
 a created `methodhook_activity.conf` file previously
 
@@ -80,7 +82,8 @@ object MethodHook {
 ```
 
 Build project's `debug` buildType.
-Now, `onCreate(savedInstanceState: Bundle?)` method of all activities defined in `org.example` package should be
+Now, `onCreate(savedInstanceState: Bundle?)` method of all activities defined in `org.example`
+package should be
 instructed with `MethodHook::start` and `MethodHook::end` calls.
 
 ### Example
@@ -94,7 +97,8 @@ the [examples](./examples).
 
 A config file specifies which methods in your classes the plugin will modify to inject method calls.
 The files are defined in [Typesafe config](https://github.com/typesafehub/config) format.  
-You can create as many files as you need, for example, we can create a config file for each Android app component
+You can create as many files as you need, for example, we can create a config file for each Android
+app component
 
 ```bash
 ./methodhook_activity.conf
@@ -127,19 +131,25 @@ frgament {
 
 Each config supports following options:
 
-* `superClass`: Specifies the parent class (__canonical name__) for which the plugin should target methods in its
+* `superClass`: Specifies the parent class (__canonical name__) for which the plugin should target
+  methods in its
   subclasses, e.g. `android.app.Activity`. Must not be defined along with `exactClass`.
-* `exactClass`: Specifies the exact class (__canonical name__) for which the plugin should target methods,
+* `exactClass`: Specifies the exact class (__canonical name__) for which the plugin should target
+  methods,
   `e.g. org.example.SomeClass`. Must not be defined along with `superClass`.
 * `methods`: Specifies an array of methods (identified by their names) where the plugin will
   inject additional code, e.g. `onCreate`.
-* `beginMethodWith`: Specifies a reference to a method to be injected at the beginning of instructed methods,
+* `beginMethodWith`: Specifies a reference to a method to be injected at the beginning of instructed
+  methods,
   e.g. `org.example.MethodHook.start`.
-* `endMethodWith`: Specifies a reference to a method to be injected at the end of instructed methods,
+* `endMethodWith`: Specifies a reference to a method to be injected at the end of instructed
+  methods,
   e.g. `org.example.MethodHook.end`.
-* `packageId`: Specifies the package name that identifies the group of classes where the plugin will target methods for
+* `packageId`: Specifies the package name that identifies the group of classes where the plugin will
+  target methods for
   injection, e.g. `org.example`.  
-  Not required, if not defined, the config will be applied to all files in your project, including third-party libraries
+  Not required, if not defined, the config will be applied to all files in your project, including
+  third-party libraries
 
 > [!IMPORTANT]
 > * Each config must have either `superClass` or `exactClass` option, but not both.
@@ -151,7 +161,8 @@ Each config supports following options:
 
 #### Plugin configuration
 
-In order to apply plugin to application, add `androidMethodHook` configuration to the application's `build.gradle[.kts]`
+In order to apply plugin to application, add `androidMethodHook` configuration to the
+application's `build.gradle[.kts]`
 file
 
 ```gradle
@@ -183,12 +194,15 @@ androidMethodHook {
 
 The `androidMethodHook` configuration supports next options:
 
-* `forceLogging`: Enables info logs of the plugin. Same as if executing gradle command with `--info` flag,
+* `forceLogging`: Enables info logs of the plugin. Same as if executing gradle command with `--info`
+  flag,
   e.g. `./gradlew assembleDebug --info`. Default value is `false`.
-* `configs`: Creates plugin's config for specific build variant. The name of config must be the same as name of build
-  variant, e.g. buildType: `debug`, or if you have productFlavor named `demo`: `demoDebug`. You can have separate sets
+* `configs`: Creates plugin's config for specific build variant. The name of config must be the same
+  as name of build
+  variant, e.g. buildType: `debug`, or if you have productFlavor named `demo`: `demoDebug`. You can
+  have separate sets
   of config for different build variants.
-  * `addConfig`: Adds relative path to a config file.
+    * `addConfig`: Adds relative path to a config file.
 
 #### Inject method calls
 
@@ -197,6 +211,8 @@ Injected method must be `public static void` and have three `String` arguments.
 Create a separate method to be injected at the beginning and end of the target method
 
 ```kotlin
+@file:Suppress("UNUSED_PARAMETER")
+
 package org.example
 
 object MethodHook {
