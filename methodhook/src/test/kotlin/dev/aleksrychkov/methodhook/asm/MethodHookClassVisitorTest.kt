@@ -34,6 +34,7 @@ class MethodHookClassVisitorTest {
             // Given
             val className = SimpleSample.className
             val classMethod = "simpleMethod"
+            val calledClassMethod = "$classMethod()->void"
             val config = configInstance(
                 methods = SimpleSample.methods,
                 beginMethodWith = TestInjector.startMethod,
@@ -45,8 +46,8 @@ class MethodHookClassVisitorTest {
             clazz.invokeMethod(classMethod, instance)
 
             // Then
-            assertTrue(TestInjector.startWasCalledFor(className, classMethod))
-            assertTrue(TestInjector.endWasCalledFor(className, classMethod))
+            assertTrue(TestInjector.startWasCalledFor(className, calledClassMethod))
+            assertTrue(TestInjector.endWasCalledFor(className, calledClassMethod))
         }
 
         @Test
@@ -54,6 +55,7 @@ class MethodHookClassVisitorTest {
             // Given
             val className = SimpleSample.className
             val classMethod = "exceptionMethod"
+            val calledClassMethod = "$classMethod()->void"
             val config = configInstance(
                 methods = SimpleSample.methods,
                 beginMethodWith = TestInjector.startMethod,
@@ -65,8 +67,8 @@ class MethodHookClassVisitorTest {
             assertThrows<Exception> { clazz.invokeMethod(classMethod, instance) }
 
             // Then
-            assertTrue(TestInjector.startWasCalledFor(className, classMethod))
-            assertTrue(TestInjector.endWasCalledFor(className, classMethod))
+            assertTrue(TestInjector.startWasCalledFor(className, calledClassMethod))
+            assertTrue(TestInjector.endWasCalledFor(className, calledClassMethod))
         }
 
         @Test
@@ -74,6 +76,7 @@ class MethodHookClassVisitorTest {
             // Given
             val className = SimpleSample.className
             val classMethod = "simpleMethod"
+            val calledClassMethod = "$classMethod()->void"
             val config = configInstance(
                 methods = SimpleSample.methods,
                 beginMethodWith = TestInjector.startMethod,
@@ -84,8 +87,8 @@ class MethodHookClassVisitorTest {
             clazz.invokeMethod(classMethod, instance)
 
             // Then
-            assertTrue(TestInjector.startWasCalledFor(className, classMethod))
-            assertFalse(TestInjector.endWasCalledFor(className, classMethod))
+            assertTrue(TestInjector.startWasCalledFor(className, calledClassMethod))
+            assertFalse(TestInjector.endWasCalledFor(className, calledClassMethod))
         }
 
         @Test
@@ -93,6 +96,7 @@ class MethodHookClassVisitorTest {
             // Given
             val className = SimpleSample.className
             val classMethod = "simpleMethod"
+            val calledClassMethod = "$classMethod()->void"
             val config = configInstance(
                 methods = SimpleSample.methods,
                 endMethodWith = TestInjector.endMethod,
@@ -103,8 +107,8 @@ class MethodHookClassVisitorTest {
             clazz.invokeMethod(classMethod, instance)
 
             // Then
-            assertFalse(TestInjector.startWasCalledFor(className, classMethod))
-            assertTrue(TestInjector.endWasCalledFor(className, classMethod))
+            assertFalse(TestInjector.startWasCalledFor(className, calledClassMethod))
+            assertTrue(TestInjector.endWasCalledFor(className, calledClassMethod))
         }
 
         private fun Class<*>.invokeMethod(
@@ -136,7 +140,7 @@ class MethodHookClassVisitorTest {
             // When
             val method = SimpleSample.methods.first()
             val actual =
-                methodCv.visitMethod(Opcodes.ASM6, method.name, method.descriptor, null, null)
+                methodCv.visitMethod(Opcodes.ASM6, method.name, "()V", null, null)
 
             // Then
             assertFalse(actual is MethodHookAdviceAdapter)
@@ -153,7 +157,7 @@ class MethodHookClassVisitorTest {
             // When
             val method = SimpleSample.methods.first()
             val actual =
-                methodCv.visitMethod(Opcodes.ASM6, method.name, method.descriptor, null, null)
+                methodCv.visitMethod(Opcodes.ASM6, method.name, "()V", null, null)
 
             // Then
             assertTrue(actual is MethodHookAdviceAdapter)

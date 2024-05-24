@@ -4,8 +4,6 @@ import com.typesafe.config.Config
 
 object MethodHookConfigMapper {
 
-    private val naiveMethodRegex = "^.+\\(.*\\).+$".toRegex()
-
     fun map(config: Config) = MethodHookConfig(
         superClass = config.stringOrDefault(MethodHookConfig.CONF_SUPER_CLASS),
         exactClass = config.stringOrDefault(MethodHookConfig.CONF_EXACT_CLASS),
@@ -24,13 +22,12 @@ object MethodHookConfigMapper {
         if (this.hasPath(path)) {
             this.getStringList(path)
                 .map { input ->
-                    check(naiveMethodRegex.matches(input)) {
-                        "Invalid method: '$input'"
+                    val method = if (input.contains("(")) {
+                        input.substringBefore("(", "")
+                    } else {
+                        input
                     }
-
-                    val name = input.substringBefore("(", "")
-                    val descriptor = input.substring(input.indexOf("("), input.length)
-                    MethodHookConfig.Method(name, descriptor)
+                    MethodHookConfig.Method(method)
                 }
                 .toSet()
         } else {

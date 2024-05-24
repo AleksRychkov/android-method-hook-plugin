@@ -27,10 +27,9 @@ interface MethodHookLogger {
 
     fun w(msg: String)
 
-    fun e(
-        msg: String,
-        t: Throwable,
-    )
+    fun e(msg: String, t: Throwable)
+
+    fun e(t: Throwable)
 }
 
 private class Impl(
@@ -75,6 +74,14 @@ private class Impl(
             p.logger.error(TAG + msg, t)
         }
     }
+
+    override fun e(t: Throwable) {
+        if (forceLogging) {
+            println(TAG + t.message)
+        } else {
+            p.logger.error(TAG, t)
+        }
+    }
 }
 
 private class Stub : MethodHookLogger {
@@ -94,6 +101,10 @@ private class Stub : MethodHookLogger {
         msg: String,
         t: Throwable,
     ) {
+        // no-op
+    }
+
+    override fun e(t: Throwable) {
         // no-op
     }
 }

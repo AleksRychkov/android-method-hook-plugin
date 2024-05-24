@@ -3,7 +3,7 @@
 rootProject.name = "android-method-hook"
 
 pluginManagement {
-    includeBuild("./methodhook")
+    includeBuild("methodhook")
 
     repositories {
         google {

@@ -23,8 +23,8 @@ data class MethodHookConfig(
         const val CONF_PACKAGE_ID = "packageId"
     }
 
-    fun hasMethod(name: String, descriptor: String): Boolean =
-        methods.find { it.name == name && it.descriptor == descriptor } != null
+    fun hasMethod(name: String): Boolean =
+        methods.find { it.name == name } != null
 
     override fun toString(): String {
         return """
@@ -38,13 +38,11 @@ MethodHookConfig
         """.trimMargin()
     }
 
-    data class Method(val name: String, val descriptor: String) : Serializable {
+    data class Method(val name: String) : Serializable {
 
         companion object {
             @Suppress("ConstPropertyName")
             private const val serialVersionUID: Long = 1
         }
-
-        override fun toString(): String = "$name$descriptor"
     }
 }

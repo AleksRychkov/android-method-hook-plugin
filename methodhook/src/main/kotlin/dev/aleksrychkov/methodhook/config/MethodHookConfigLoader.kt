@@ -26,10 +26,11 @@ private class MethodHookConfigLoaderImpl : MethodHookConfigLoader {
             }
         }
 
-        println()
-        Log.i("Loaded next configs:\n${configs.joinToString("\n")}")
-        println()
-
+        if (configs.isEmpty()) {
+            Log.i("No configs were provided")
+        } else {
+            Log.i("Loaded next configs:\n${configs.joinToString("\n")}")
+        }
         return configs
     }
 }

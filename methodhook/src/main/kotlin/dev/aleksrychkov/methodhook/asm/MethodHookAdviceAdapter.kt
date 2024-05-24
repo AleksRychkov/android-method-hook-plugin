@@ -2,6 +2,7 @@ package dev.aleksrychkov.methodhook.asm
 
 import dev.aleksrychkov.methodhook.config.MethodHookConfig
 import dev.aleksrychkov.methodhook.utils.Log
+import dev.aleksrychkov.methodhook.utils.convertDescriptor
 import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
@@ -24,6 +25,15 @@ class MethodHookAdviceAdapter(
 
     private val start: Label = Label()
     private val end: Label = Label()
+
+    private var _fullMethod: String? = null
+    private val fullMethod: String
+        get() {
+            if (_fullMethod == null) {
+                _fullMethod = name + methodDesc.convertDescriptor()
+            }
+            return _fullMethod!!
+        }
 
     override fun onMethodEnter() {
         visitTryCatchBlock(start, end, end, JVM_THROWABLE_TYPE)
@@ -53,14 +63,14 @@ class MethodHookAdviceAdapter(
 
     private fun execBeforeBlock() {
         if (config.beginMethodWith.isNotEmpty()) {
-            Log.i("Perform inject onMethodEnter for $className on $name with: ${config.beginMethodWith}")
+            Log.i("Perform inject onMethodEnter for $className on $fullMethod with: ${config.beginMethodWith}")
             injectCode(config.beginMethodWith)
         }
     }
 
     private fun execAfterBlock() {
         if (config.endMethodWith.isNotEmpty()) {
-            Log.i("Perform inject onMethodExit for $className on $name with: ${config.endMethodWith}")
+            Log.i("Perform inject onMethodExit for $className on $fullMethod with: ${config.endMethodWith}")
             injectCode(config.endMethodWith)
         }
     }
@@ -86,7 +96,7 @@ class MethodHookAdviceAdapter(
         visitVarInsn(Opcodes.ALOAD, classNameLocalVariableIndex)
 
         visitLdcInsn(className)
-        visitLdcInsn(name)
+        visitLdcInsn(fullMethod)
 
         visitMethodInsn(
             Opcodes.INVOKESTATIC,

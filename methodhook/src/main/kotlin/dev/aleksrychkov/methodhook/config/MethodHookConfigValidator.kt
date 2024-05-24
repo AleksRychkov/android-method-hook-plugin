@@ -83,7 +83,7 @@ private class MethodHookConfigValidatorImpl : MethodHookConfigValidator {
         this.superClass.isNotBlank() && this.exactClass.isNotBlank()
 
     private fun MethodHookConfig.methodsPresent() =
-        this.methods.isNotEmpty() && this.methods.none { it.name.isBlank() || it.descriptor.isBlank() }
+        this.methods.isNotEmpty() && this.methods.none { it.name.isBlank() }
 
     private fun MethodHookConfig.beginOrEndWithMethodPresent() =
         this.beginMethodWith.isNotBlank() || this.endMethodWith.isNotBlank()

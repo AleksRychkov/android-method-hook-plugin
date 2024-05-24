@@ -13,7 +13,6 @@ object AndroidMethodInjectorInceptionConfigFactory {
         endMethodWith: String = "",
         packageId: String = "",
     ) = MethodHookConfig(
-        buildType = "",
         superClass = superClass,
         exactClass = exactClass,
         methods = methods,
@@ -22,6 +21,5 @@ object AndroidMethodInjectorInceptionConfigFactory {
         endMethodWith = endMethodWith,
     )
 
-    fun methodInstance(name: String = "", descriptor: String = "") =
-        MethodHookConfig.Method(name, descriptor)
+    fun methodInstance(name: String = "") = MethodHookConfig.Method(name)
 }

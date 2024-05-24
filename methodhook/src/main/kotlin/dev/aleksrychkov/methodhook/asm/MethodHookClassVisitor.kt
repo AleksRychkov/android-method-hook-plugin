@@ -1,7 +1,6 @@
 package dev.aleksrychkov.methodhook.asm
 
 import dev.aleksrychkov.methodhook.config.MethodHookConfig
-import dev.aleksrychkov.methodhook.utils.Log
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
 
@@ -32,7 +31,7 @@ class MethodHookClassVisitor(
         exceptions: Array<out String>?,
     ): MethodVisitor {
         var mv = super.visitMethod(access, name, descriptor, signature, exceptions)
-        if (config.hasMethod(name, descriptor)) {
+        if (config.hasMethod(name)) {
             mv = MethodHookAdviceAdapter(
                 api, mv, access, name, descriptor, className, config,
             )

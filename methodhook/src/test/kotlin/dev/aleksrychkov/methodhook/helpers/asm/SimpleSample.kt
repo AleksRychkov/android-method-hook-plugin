@@ -7,16 +7,16 @@ class SimpleSample {
     companion object {
         val className: String = SimpleSample::class.java.name
         val methods: Set<MethodHookConfig.Method> = setOf(
-            MethodHookConfig.Method("simpleMethod", "()V"),
-            MethodHookConfig.Method("exceptionMethod", "()V"),
+            MethodHookConfig.Method("simpleMethod"),
+            MethodHookConfig.Method("exceptionMethod"),
         )
     }
 
-    @Suppress("EmptyFunctionBlock")
+    @Suppress("EmptyFunctionBlock", "unused")
     fun simpleMethod() {
     }
 
-    @Suppress("TooGenericExceptionThrown")
+    @Suppress("TooGenericExceptionThrown", "unused")
     fun exceptionMethod() {
         throw RuntimeException("Test")
     }

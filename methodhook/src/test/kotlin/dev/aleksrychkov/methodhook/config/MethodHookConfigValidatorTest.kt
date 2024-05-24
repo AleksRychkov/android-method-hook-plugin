@@ -1,13 +1,13 @@
 package dev.aleksrychkov.methodhook.config
 
-import dev.aleksrychkov.methodhook.helpers.AndroidMethodInjectorInceptionConfigFactory.configInstance
-import dev.aleksrychkov.methodhook.helpers.AndroidMethodInjectorInceptionConfigFactory.methodInstance
 import dev.aleksrychkov.methodhook.config.MethodHookConfigValidator.Companion.BEGIN_METHOD_AND_END_METHOD_MISSING_ERROR
 import dev.aleksrychkov.methodhook.config.MethodHookConfigValidator.Companion.DUPLICATE_ERROR
 import dev.aleksrychkov.methodhook.config.MethodHookConfigValidator.Companion.INVALID_PACKAGE_ID
 import dev.aleksrychkov.methodhook.config.MethodHookConfigValidator.Companion.METHODS_EMPTY
 import dev.aleksrychkov.methodhook.config.MethodHookConfigValidator.Companion.SUPER_AND_EXACT_MISSING_ERROR
 import dev.aleksrychkov.methodhook.config.MethodHookConfigValidator.Companion.SUPER_AND_EXACT_SET_ERROR
+import dev.aleksrychkov.methodhook.helpers.AndroidMethodInjectorInceptionConfigFactory.configInstance
+import dev.aleksrychkov.methodhook.helpers.AndroidMethodInjectorInceptionConfigFactory.methodInstance
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
@@ -99,29 +99,7 @@ class MethodHookConfigValidatorTest {
         // Given
         val config = configInstance(
             exactClass = "exact",
-            methods = setOf(methodInstance(descriptor = "()V")),
-        )
-
-        // When
-        val error: IllegalStateException? = try {
-            validator.validate(listOf(config))
-            null
-        } catch (e: IllegalStateException) {
-            e
-        }
-
-        // Then
-        assertNotNull(error)
-        requireNotNull(error)
-        assertTrue(error.message!!.startsWith(METHODS_EMPTY))
-    }
-
-    @Test
-    fun `When validate and methods contains empty descriptor Then exception is thrown`() {
-        // Given
-        val config = configInstance(
-            exactClass = "exact",
-            methods = setOf(methodInstance(name = "method")),
+            methods = setOf(methodInstance()),
         )
 
         // When
@@ -143,7 +121,7 @@ class MethodHookConfigValidatorTest {
         // Given
         val config = configInstance(
             exactClass = "exact",
-            methods = setOf(methodInstance("method", "()V")),
+            methods = setOf(methodInstance("method")),
         )
 
         // When
@@ -165,12 +143,12 @@ class MethodHookConfigValidatorTest {
         // Given
         val config = configInstance(
             exactClass = "exact",
-            methods = setOf(methodInstance("method", "()V")),
+            methods = setOf(methodInstance("method")),
             beginMethodWith = "method",
         )
         val configDuplicate = configInstance(
             exactClass = "exact",
-            methods = setOf(methodInstance("method", "()V")),
+            methods = setOf(methodInstance("method")),
             beginMethodWith = "method",
         )
 
@@ -193,12 +171,12 @@ class MethodHookConfigValidatorTest {
         // Given
         val config = configInstance(
             superClass = "super",
-            methods = setOf(methodInstance("method", "()V")),
+            methods = setOf(methodInstance("method")),
             beginMethodWith = "method",
         )
         val configDuplicate = configInstance(
             superClass = "super",
-            methods = setOf(methodInstance("method", "()V")),
+            methods = setOf(methodInstance("method")),
             beginMethodWith = "method",
         )
 
@@ -221,7 +199,7 @@ class MethodHookConfigValidatorTest {
         // Given
         val config = configInstance(
             superClass = "super",
-            methods = setOf(methodInstance("method", "()V")),
+            methods = setOf(methodInstance("method")),
             beginMethodWith = "method",
             packageId = "123InvalidPackage"
         )
@@ -245,7 +223,7 @@ class MethodHookConfigValidatorTest {
         // Given
         val config = configInstance(
             superClass = "super",
-            methods = setOf(methodInstance("method", "()V")),
+            methods = setOf(methodInstance("method")),
             beginMethodWith = "method",
             packageId = " "
         )
@@ -269,7 +247,7 @@ class MethodHookConfigValidatorTest {
         // Given
         val config = configInstance(
             superClass = "super",
-            methods = setOf(methodInstance("method", "()V")),
+            methods = setOf(methodInstance("method")),
             beginMethodWith = "method",
         )
 
@@ -290,13 +268,13 @@ class MethodHookConfigValidatorTest {
         // Given
         val config = configInstance(
             superClass = "super",
-            methods = setOf(methodInstance("method", "()V")),
+            methods = setOf(methodInstance("method")),
             beginMethodWith = "method",
             packageId = "package1",
         )
         val config2 = configInstance(
             superClass = "super",
-            methods = setOf(methodInstance("method", "()V")),
+            methods = setOf(methodInstance("method")),
             beginMethodWith = "method",
             packageId = "package2",
         )

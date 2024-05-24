@@ -7,11 +7,9 @@ import org.junit.jupiter.api.Test
 
 class MethodHookConfigLoaderTest {
     private companion object {
-        const val TEST_BUILD_TYPE = "test"
         const val TEST_SUPER_CLASS = "SuperClass"
         const val TEST_EXACT_CLASS = "ExactClass"
         const val TEST_METHOD = "method"
-        const val TEST_METHOD_DESCRIPTOR = "()V"
         const val TEST_PACKAGE_ID = "dev.aleksrychkov.test"
         const val TEST_BEGIN_METHOD_WITH = "dev.aleksrychkov.test.begin"
         const val TEST_END_METHOD_WITH = "dev.aleksrychkov.test.end"
@@ -30,11 +28,9 @@ class MethodHookConfigLoaderTest {
         // Then
         assertTrue(inceptionConfigs.isNotEmpty())
         val config = inceptionConfigs.first()
-        assertEquals(TEST_BUILD_TYPE, config.buildType)
         assertEquals(TEST_SUPER_CLASS, config.superClass)
         assertEquals(TEST_EXACT_CLASS, config.exactClass)
         assertEquals(TEST_METHOD, config.methods.first().name)
-        assertEquals(TEST_METHOD_DESCRIPTOR, config.methods.first().descriptor)
         assertEquals(TEST_PACKAGE_ID, config.packageId)
         assertEquals(TEST_BEGIN_METHOD_WITH, config.beginMethodWith)
         assertEquals(TEST_END_METHOD_WITH, config.endMethodWith)
