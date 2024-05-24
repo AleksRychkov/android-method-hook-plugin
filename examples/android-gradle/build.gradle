@@ -39,7 +39,7 @@ androidMethodHook {
     forceLogging true
     configs {
         create("debug") {
-            addSource("./methodhook/methodhook_activity.conf")
+            addConfig("./methodhook/methodhook_activity.conf")
         }
     }
 }

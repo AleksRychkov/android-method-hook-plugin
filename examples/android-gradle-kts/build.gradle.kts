@@ -43,9 +43,9 @@ androidMethodHook {
     forceClassTransform = true
     configs {
         create("debug") {
-            addSource("./methodhook/methodhook_activity.conf")
-            addSource("./methodhook/methodhook_fragment.conf")
-            addSource("./methodhook/methodhook_service.conf")
+            addConfig("./methodhook/methodhook_activity.conf")
+            addConfig("./methodhook/methodhook_fragment.conf")
+            addConfig("./methodhook/methodhook_service.conf")
         }
     }
 }

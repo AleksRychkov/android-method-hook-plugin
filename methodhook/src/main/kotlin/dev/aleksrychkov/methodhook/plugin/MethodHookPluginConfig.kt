@@ -27,10 +27,10 @@ abstract class MethodHookPluginConfig @Inject constructor(
 
         override fun getName(): String = name
 
-        internal val sources: ListProperty<String> = objects.listProperty(String::class.java)
+        internal val configs: ListProperty<String> = objects.listProperty(String::class.java)
 
-        fun addSource(path: String) {
-            this.sources.add(path)
+        fun addConfig(path: String) {
+            this.configs.add(path)
         }
     }
 }

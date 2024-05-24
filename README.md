@@ -39,7 +39,7 @@ activity {
 }
 ```
 
-Add plugin's configuration to an Android application's `build.gradle[.kts]` file. In `addSource` method specify a path
+Add plugin's configuration to an Android application's `build.gradle[.kts]` file. In `addConfig` method specify a path
 to
 a created `methodhook_activity.conf` file previously
 
@@ -55,7 +55,7 @@ android { … }
 androidMethodHook {
     configs {
         create("debug") {
-            addSource("./methodhook_activity.conf")
+            addConfig("./methodhook_activity.conf")
         }
     }
 }
@@ -172,10 +172,10 @@ androidMethodHook {
     forceLogging = true       
     configs {
         create("debug") {
-            addSource("./methodhook_activity_debug.conf")
+            addConfig("./methodhook_activity_debug.conf")
         }
         create("release") {
-            addSource("./methodhook_activity_release.conf")
+            addConfig("./methodhook_activity_release.conf")
         }
     }
 }
@@ -188,7 +188,7 @@ The `androidMethodHook` configuration supports next options:
 * `configs`: Creates plugin's config for specific build variant. The name of config must be the same as name of build
   variant, e.g. buildType: `debug`, or if you have productFlavor named `demo`: `demoDebug`. You can have separate sets
   of config for different build variants.
-  * `addSource`: Adds relative path to a config file.
+  * `addConfig`: Adds relative path to a config file.
 
 #### Inject method calls
 

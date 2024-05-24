@@ -42,7 +42,7 @@ abstract class MethodHookPlugin : Plugin<Project> {
                     conf.name == variant.name || variant.productFlavors.any { it.second == conf.name }
                 }
                 .flatMap {
-                    it.sources.get()
+                    it.configs.get()
                 }
                 .map {
                     target.file(it)
