@@ -1,12 +1,14 @@
+@file:Suppress("UnstableApiUsage")
+
 import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
     `kotlin-dsl`
     alias(libs.plugins.detekt)
-    `maven-publish`
+    alias(libs.plugins.plugin.publish)
 }
 
-group = "dev.aleksrychkov.methodhook"
+group = "dev.aleksrychkov"
 version = "0.1"
 
 java {
@@ -56,9 +58,13 @@ gradlePlugin {
             displayName = "Android method hook plugin"
             description =
                 "An Android Gradle plugin to inject method call at the beginning and end of methods in Android application at compile time"
-            @Suppress("UnstableApiUsage")
-            tags.addAll(listOf("android", "bytecode", "weaver", "asm"))
+            tags.set(listOf("android", "android-gradle-plugin", "asm"))
             implementationClass = "dev.aleksrychkov.methodhook.plugin.MethodHookPlugin"
         }
     }
+}
+
+gradlePlugin {
+    website.set("https://github.com/AleksRychkov/android-method-hook-plugin")
+    vcsUrl.set("https://github.com/AleksRychkov/android-method-hook-plugin.git")
 }
