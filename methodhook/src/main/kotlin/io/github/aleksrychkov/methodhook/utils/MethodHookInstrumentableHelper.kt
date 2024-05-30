@@ -49,7 +49,9 @@ object MethodHookInstrumentableHelper {
         this.exactClass.isNotEmpty() && classData.className.endsWith(this.exactClass)
 
     private fun MethodHookConfig.instrumentableBySuperClass(classData: ClassData): Boolean =
-        this.superClass.isNotEmpty() && classData.superClasses.contains(this.superClass)
+        this.superClass.isNotEmpty() &&
+                (classData.superClasses.contains(this.superClass) ||
+                        classData.interfaces.contains(this.superClass))
 
     private fun String.fromPackage(packageId: String): Boolean = this.startsWith("$packageId.")
 
