@@ -65,6 +65,6 @@ gradlePlugin {
 }
 
 gradlePlugin {
-    website.set("https://github.com/AleksRychkov/android-method-hook-plugin")
-    vcsUrl.set("https://github.com/AleksRychkov/android-method-hook-plugin.git")
+    website.set("https://github.com/aleksrychkov/android-method-hook-plugin")
+    vcsUrl.set("https://github.com/aleksrychkov/android-method-hook-plugin.git")
 }
