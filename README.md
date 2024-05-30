@@ -12,7 +12,7 @@ Apply Gradle plugin to Android application
 ```gradle
 plugins {
     id("com.android.application") version <version>
-    // todo: id("dev.aleksrychkov.methodhook") version <version>
+    // todo: id("io.github.aleksrychkov.methodhook") version <version>
 }
 ```
 
@@ -45,7 +45,7 @@ a created `methodhook_activity.conf` file previously
 // build.gradle.kts
 plugins {
     id("com.android.application") version <version>
-    id("dev.aleksrychkov.methodhook") version <version>
+    id("io.github.aleksrychkov.methodhook") version <version>
 }
 
 android { … }
@@ -165,7 +165,7 @@ file
 // build.gradle.kts
 plugins {
     id("com.android.application") version <version>
-    id("dev.aleksrychkov.methodhook") version <version>
+    id("io.github.aleksrychkov.methodhook") version <version>
 }
 
 android {

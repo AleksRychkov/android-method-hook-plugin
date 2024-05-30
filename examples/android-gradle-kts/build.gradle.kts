@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "dev.aleksrychkov.example"
+    namespace = "io.github.aleksrychkov.example"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "dev.aleksrychkov.example.android.kts"
+        applicationId = "io.github.aleksrychkov.example.android.kts"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.plugin.publish)
 }
 
-group = "dev.aleksrychkov"
+group = "io.github.aleksrychkov"
 version = "0.1"
 
 java {
@@ -54,12 +54,12 @@ tasks.withType<Detekt>().configureEach {
 gradlePlugin {
     plugins {
         create("methodhook-plugin") {
-            id = "dev.aleksrychkov.methodhook"
+            id = "io.github.aleksrychkov.methodhook"
             displayName = "Android method hook plugin"
             description =
                 "An Android Gradle plugin to inject method call at the beginning and end of methods in Android application at compile time"
             tags.set(listOf("android", "android-gradle-plugin", "asm"))
-            implementationClass = "dev.aleksrychkov.methodhook.plugin.MethodHookPlugin"
+            implementationClass = "io.github.aleksrychkov.methodhook.plugin.MethodHookPlugin"
         }
     }
 }

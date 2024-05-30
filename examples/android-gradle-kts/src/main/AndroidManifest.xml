@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Androidgradlemethodinception"
         tools:targetApi="31">
         <activity
-            android:name="dev.aleksrychkov.example.MainActivity"
+            android:name="io.github.aleksrychkov.example.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,9 +21,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name="dev.aleksrychkov.example.MainService" />
+        <service android:name="io.github.aleksrychkov.example.MainService" />
 
-        <activity android:name="dev.aleksrychkov.example2.MainActivity2"/>
+        <activity android:name="io.github.aleksrychkov.example2.MainActivity2" />
     </application>
 
 </manifest>

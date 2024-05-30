@@ -15,7 +15,7 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "plugin-publish" }
-methodhook = { id = "dev.aleksrychkov.methodhook", version = "0.1" }
+methodhook = { id = "io.github.aleksrychkov.methodhook", version = "0.1" }
 
 
 [libraries]
