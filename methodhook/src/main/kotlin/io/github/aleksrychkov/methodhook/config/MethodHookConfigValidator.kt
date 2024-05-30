@@ -39,7 +39,7 @@ interface MethodHookConfigValidator {
 
 private class MethodHookConfigValidatorImpl : MethodHookConfigValidator {
 
-    private val packageNameRegex = Regex("^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)*\$")
+    private val packageNameRegex = Regex("^[a-zA-Z][a-zA-Z0-9_]*(\\.[a-zA-Z0-9_]+)*$")
 
     override fun validate(configs: List<MethodHookConfig>) {
         configs.groupBy { it.packageId }.values.forEach { configsByPackageId ->
