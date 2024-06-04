@@ -5,14 +5,14 @@ Android application at compile time using the [ASM](https://asm.ow2.io) library.
 
 Build and tested for AGP version: `8.2.2`.
 
-## Installation (WIP)
+## Installation
 
 Apply Gradle plugin to Android application
 
 ```gradle
 plugins {
     id("com.android.application") version <version>
-    // todo: id("io.github.aleksrychkov.methodhook") version <version>
+    id("io.github.aleksrychkov.methodhook") version <version>
 }
 ```
 
