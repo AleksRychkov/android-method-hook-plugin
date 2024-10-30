@@ -252,6 +252,12 @@ activity {
 }
 ```
 
+## References
+
+* [Using the ASM framework to implement common Java bytecode transformation patterns](https://lsieun.github.io/assets/pdf/asm-transformations.pdf)
+* [ASM framework - Eugene Kuleshov](https://wiki.jvmlangsummit.com/pdf/23_Kuleshov_asm.pdf)
+* [ASM guide](https://asm.ow2.io/asm4-guide.pdf)
+
 ## License
 
     Copyright Aleksandr Rychkov
