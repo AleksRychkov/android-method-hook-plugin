@@ -7,7 +7,7 @@ import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.commons.AdviceAdapter
 
-class TryFinallyAdapter(
+internal class TryFinallyAdapter(
     private val injectors: Set<Injector>,
     className: String,
     api: Int,

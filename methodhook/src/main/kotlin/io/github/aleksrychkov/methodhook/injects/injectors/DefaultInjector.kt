@@ -6,7 +6,7 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.commons.AdviceAdapter
 
-class DefaultInjector(
+internal class DefaultInjector(
     private val enterInjectMethod: String?,
     private val exitInjectMethod: String?,
 ) : Injector {

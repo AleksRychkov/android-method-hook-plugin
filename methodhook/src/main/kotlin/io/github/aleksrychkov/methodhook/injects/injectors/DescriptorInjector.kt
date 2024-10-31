@@ -22,7 +22,7 @@ import org.objectweb.asm.Opcodes.RETURN
 import org.objectweb.asm.Type
 import org.objectweb.asm.commons.AdviceAdapter
 
-class DescriptorInjector(
+internal class DescriptorInjector(
     private val enterInjectMethod: String?,
     private val exitInjectMethod: String?,
 ) : Injector {

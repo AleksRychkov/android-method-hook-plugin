@@ -6,7 +6,7 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.commons.AdviceAdapter
 
-object TraceInjector : Injector {
+internal object TraceInjector : Injector {
 
     private const val TRACE_MSG_LENGTH = 127
     private const val TRACE_MSG_PREFIX = "=>"
