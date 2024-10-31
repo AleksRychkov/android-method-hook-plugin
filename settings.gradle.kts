@@ -27,4 +27,3 @@ dependencyResolutionManagement {
 }
 
 include(":examples:android-gradle-kts")
-include(":examples:android-gradle")
