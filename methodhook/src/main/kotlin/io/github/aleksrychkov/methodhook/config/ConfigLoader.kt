@@ -6,9 +6,7 @@ import java.io.File
 
 internal interface ConfigLoader {
     companion object {
-        operator fun invoke(): ConfigLoader {
-            return ConfigLoaderImpl()
-        }
+        operator fun invoke(): ConfigLoader = ConfigLoaderImpl()
     }
 
     fun load(files: List<File>): List<MethodHookConfig>
