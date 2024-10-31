@@ -3,20 +3,20 @@ package io.github.aleksrychkov.methodhook.plugin
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
-import io.github.aleksrychkov.methodhook.asm.MethodHookClassVisitor
+import io.github.aleksrychkov.methodhook.asm.InjectorClassVisitor
+import io.github.aleksrychkov.methodhook.config.ConfigLoader
 import io.github.aleksrychkov.methodhook.config.MethodHookConfig
-import io.github.aleksrychkov.methodhook.config.MethodHookConfigLoader
-import io.github.aleksrychkov.methodhook.config.MethodHookConfigValidator
-import io.github.aleksrychkov.methodhook.utils.MethodHookInstrumentableHelper.findInstrumentable
+import io.github.aleksrychkov.methodhook.config.MethodHookConfigValue
+import io.github.aleksrychkov.methodhook.config.valueOrThrow
 import org.objectweb.asm.ClassVisitor
 import java.util.Collections
 
-abstract class MethodHookAsmClassVisitorFactory :
+internal abstract class MethodHookAsmClassVisitorFactory :
     AsmClassVisitorFactory<MethodHookInstrumentationParameters> {
 
     companion object {
-        private val cache = Collections.synchronizedMap(HashMap<String, MethodHookConfig?>())
-        private var configs: MutableList<MethodHookConfig> = mutableListOf()
+        private var cache = Collections.synchronizedMap(LruCache<String, List<MethodHookConfig>?>())
+        private var configs: List<MethodHookConfig> = emptyList()
         private var isConfigLoaded = false
     }
 
@@ -24,34 +24,73 @@ abstract class MethodHookAsmClassVisitorFactory :
         classContext: ClassContext,
         nextClassVisitor: ClassVisitor,
     ): ClassVisitor {
-        val config = cache[classContext.currentClassData.className]
-        return if (config != null) {
-            MethodHookClassVisitor(
-                api = instrumentationContext.apiVersion.get(),
-                cv = nextClassVisitor,
-                config = config,
+        var cv = nextClassVisitor
+        val configs = cache[classContext.currentClassData.className]
+            ?: getConfigForClassData(classContext.currentClassData)
+
+        if (configs.isNotEmpty()) {
+            val api = instrumentationContext.apiVersion.get()
+            cv = InjectorClassVisitor(
+                api = api,
+                cv = cv,
+                configs = configs,
             )
-        } else {
-            nextClassVisitor
         }
+        return cv
     }
 
     override fun isInstrumentable(classData: ClassData): Boolean {
-        var config = cache[classData.className]
-        if (config == null && !cache.containsKey(classData.className)) {
-            config = configs().findInstrumentable(classData)
-            cache[classData.className] = config
+        var configs = cache[classData.className]
+        if (configs == null && !cache.containsKey(classData.className)) {
+            configs = getConfigForClassData(classData)
+            cache[classData.className] = configs
         }
-
-        return config != null
+        return !configs.isNullOrEmpty()
     }
+
+    private fun getConfigForClassData(classData: ClassData): List<MethodHookConfig> = configs()
+        .asSequence()
+        .filter { config ->
+            if (config.packageId == MethodHookConfigValue.All) return@filter true
+
+            val configPackage = config.packageId.valueOrThrow()
+            classData.className.startsWith("$configPackage.")
+        }
+        .filter { config ->
+            if (config.superClass == MethodHookConfigValue.All) return@filter true
+
+            val configSuperClass = config.superClass.valueOrThrow()
+            classData.superClasses.contains(configSuperClass)
+        }
+        .filter { config ->
+            if (config.interfaces == MethodHookConfigValue.All) return@filter true
+
+            val configInterfaces = config.interfaces.valueOrThrow()
+
+            classData.interfaces.intersect(configInterfaces.toSet()).isNotEmpty()
+        }
+        .filter { config ->
+            if (config.clazz == MethodHookConfigValue.All) return@filter true
+
+            val configClass = config.clazz.valueOrThrow()
+            classData.className == configClass
+        }
+        .toList()
+
 
     private fun configs(): List<MethodHookConfig> = synchronized(configs) {
         if (!isConfigLoaded) {
             isConfigLoaded = true
-            configs.addAll(MethodHookConfigLoader().loadConfigs(parameters.get().configs.get()))
-            MethodHookConfigValidator().validate(configs)
+            configs = ConfigLoader().load(parameters.get().configs.get())
         }
         return configs
+    }
+}
+
+private const val DEFAULT_LRU_SIZE = 25
+
+private class LruCache<K, V>(private val maxSize: Int = DEFAULT_LRU_SIZE) : LinkedHashMap<K, V>() {
+    override fun removeEldestEntry(eldest: MutableMap.MutableEntry<K, V>?): Boolean {
+        return size > maxSize
     }
 }

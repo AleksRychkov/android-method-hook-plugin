@@ -2,14 +2,14 @@ package io.github.aleksrychkov.methodhook.utils
 
 import org.gradle.api.Project
 
-var Log: MethodHookLogger = Stub()
+internal var Log: Logger = Stub()
 
-interface MethodHookLogger {
+internal interface Logger {
     companion object {
         operator fun invoke(
             p: Project,
             forceLogging: Boolean,
-        ): MethodHookLogger {
+        ): Logger {
             if (Log is Stub) {
                 Log = Impl(p, forceLogging)
             }
@@ -35,7 +35,7 @@ interface MethodHookLogger {
 private class Impl(
     private val p: Project,
     private val forceLogging: Boolean,
-) : MethodHookLogger {
+) : Logger {
     companion object {
         private const val TAG = "AndroidMethodInjector::"
     }
@@ -84,7 +84,7 @@ private class Impl(
     }
 }
 
-private class Stub : MethodHookLogger {
+private class Stub : Logger {
     override fun d(msg: String) {
         // no-op
     }

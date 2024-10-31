@@ -36,6 +36,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.appcompat)
+
+    implementation(libs.okhttp)
 }
 
 androidMethodHook {
@@ -43,9 +45,9 @@ androidMethodHook {
     forceClassTransform = true
     configs {
         create("debug") {
-            addConfig("./methodhook/methodhook_activity.conf")
-            addConfig("./methodhook/methodhook_fragment.conf")
-            addConfig("./methodhook/methodhook_service.conf")
+            addConfig("./methodhook/descriptor.conf")
+            addConfig("./methodhook/okhttp.conf")
+            addConfig("./methodhook/auto_trace.conf")
         }
     }
 }

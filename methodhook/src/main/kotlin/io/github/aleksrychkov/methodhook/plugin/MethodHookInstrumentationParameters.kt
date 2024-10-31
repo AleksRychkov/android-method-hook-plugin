@@ -7,7 +7,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import java.io.File
 
-interface MethodHookInstrumentationParameters : InstrumentationParameters {
+internal interface MethodHookInstrumentationParameters : InstrumentationParameters {
 
     /**
      * AGP will re-instrument dependencies, when the [InstrumentationParameters] changed

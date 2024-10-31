@@ -1,8 +1,17 @@
 package io.github.aleksrychkov.example
 
 import android.os.Bundle
+import io.github.aleksrychkov.example.sandbox.DescriptorPlayground
+import io.github.aleksrychkov.example.sandbox.OkhttpPlayground
+import io.github.aleksrychkov.example.sandbox.Playground
 
-class MainActivity : AbstractActivity() {
+
+class MainActivity : AbstractActivity(), AutoTrace {
+
+    private val sandbox: List<Playground> = listOf(
+        DescriptorPlayground(),
+        OkhttpPlayground()
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,6 +24,9 @@ class MainActivity : AbstractActivity() {
                 MainFragment()
             )
             .commit()
+
+
+        sandbox.forEach(Playground::test)
     }
 
     override fun onStart() {
