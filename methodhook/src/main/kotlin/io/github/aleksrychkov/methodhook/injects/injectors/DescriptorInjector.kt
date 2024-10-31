@@ -22,6 +22,19 @@ import org.objectweb.asm.Opcodes.RETURN
 import org.objectweb.asm.Type
 import org.objectweb.asm.commons.AdviceAdapter
 
+/**
+ * An implementation of the [Injector] interface that injects behavior at the entry and exit
+ * points of a method using the method descriptor to pass arguments and return values.
+ *
+ * The [DescriptorInjector] invokes specified methods when a target method is entered and exited.
+ * It uses the method's argument types and return type to appropriately load parameters onto the
+ * stack and pass them to the specified injection methods.
+ *
+ * @param enterInjectMethod The fully qualified name of the method to be invoked upon entering
+ *        the target method. If null, no injection occurs on entry.
+ * @param exitInjectMethod The fully qualified name of the method to be invoked upon exiting
+ *        the target method. If null, no injection occurs on exit.
+ */
 internal class DescriptorInjector(
     private val enterInjectMethod: String?,
     private val exitInjectMethod: String?,

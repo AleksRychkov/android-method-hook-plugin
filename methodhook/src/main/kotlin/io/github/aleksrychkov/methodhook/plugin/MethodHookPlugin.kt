@@ -13,6 +13,9 @@ import org.gradle.api.Project
 import org.gradle.api.UnknownDomainObjectException
 import java.io.File
 
+/**
+ * A Gradle plugin for injecting method calls into Android projects during the build process.
+ */
 abstract class MethodHookPlugin : Plugin<Project> {
     private companion object {
         const val EXTENSION_NAME = "androidMethodHook"

@@ -7,6 +7,10 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import java.io.File
 
+/**
+ * An interface defining parameters for method hooking instrumentation in the Android
+ * build process.
+ */
 internal interface MethodHookInstrumentationParameters : InstrumentationParameters {
 
     /**

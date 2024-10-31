@@ -4,11 +4,25 @@ import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigParseOptions
 import java.io.File
 
+/**
+ * An interface for loading configuration settings.
+ */
 internal interface ConfigLoader {
     companion object {
+        /**
+         * Creates an instance of [ConfigLoader].
+         *
+         * @return A new instance of [ConfigLoader].
+         */
         operator fun invoke(): ConfigLoader = ConfigLoaderImpl()
     }
 
+    /**
+     * Loads configurations from the specified list of files.
+     *
+     * @param files A list of configuration files to be loaded.
+     * @return A list of [Config] instances parsed from the provided files.
+     */
     fun load(files: List<File>): List<Config>
 }
 

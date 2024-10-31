@@ -9,6 +9,13 @@ import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
 import kotlin.properties.Delegates.notNull
 
+/**
+ * A visitor for a class structure that applies method injections based on provided configurations.
+ *
+ * @param api The ASM API version.
+ * @param cv The [ClassVisitor] to which this visitor delegates calls.
+ * @param configs The list of configurations that specify which methods should be hooked.
+ */
 internal class InjectorClassVisitor(
     api: Int,
     cv: ClassVisitor,

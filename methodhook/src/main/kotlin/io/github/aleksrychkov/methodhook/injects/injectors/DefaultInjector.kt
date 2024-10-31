@@ -6,6 +6,19 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.commons.AdviceAdapter
 
+/**
+ * An implementation of the [Injector] interface that allows for injecting behavior at the
+ * entry and exit points of a method.
+ *
+ * The [DefaultInjector] uses specified methods to inject behavior when a method is entered
+ * and exited. It dynamically invokes the provided methods with the class name, method name,
+ * and method descriptor as parameters.
+ *
+ * @param enterInjectMethod The fully qualified name of the method to be invoked upon entering
+ *        the target method. If null, no injection occurs on entry.
+ * @param exitInjectMethod The fully qualified name of the method to be invoked upon exiting
+ *        the target method. If null, no injection occurs on exit.
+ */
 internal class DefaultInjector(
     private val enterInjectMethod: String?,
     private val exitInjectMethod: String?,
