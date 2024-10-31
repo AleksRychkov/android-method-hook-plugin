@@ -84,32 +84,43 @@ internal abstract class MethodHookAsmClassVisitorFactory :
      */
     private fun getConfigForClassData(classData: ClassData): List<Config> = configs()
         .asSequence()
-        .filter { config ->
+        .filterByPackage(classData)
+        .filterBySuperClass(classData)
+        .filterByInterfaces(classData)
+        .filterByClasses(classData)
+        .toList()
+
+    private fun Sequence<Config>.filterByPackage(classData: ClassData): Sequence<Config> =
+        this.filter { config ->
             if (config.packageId.isAll()) return@filter true
 
             val configPackage = config.packageId.valueOrThrow()
             classData.className.startsWith("$configPackage.")
         }
-        .filter { config ->
+
+    private fun Sequence<Config>.filterBySuperClass(classData: ClassData): Sequence<Config> =
+        this.filter { config ->
             if (config.superClass.isAll()) return@filter true
 
             val configSuperClass = config.superClass.valueOrThrow()
             classData.superClasses.contains(configSuperClass)
         }
-        .filter { config ->
+
+    private fun Sequence<Config>.filterByInterfaces(classData: ClassData): Sequence<Config> =
+        this.filter { config ->
             if (config.interfaces.isAll()) return@filter true
 
             val configInterfaces = config.interfaces.valueOrThrow()
             classData.interfaces.intersect(configInterfaces.toSet()).isNotEmpty()
         }
-        .filter { config ->
+
+    private fun Sequence<Config>.filterByClasses(classData: ClassData): Sequence<Config> =
+        this.filter { config ->
             if (config.clazz.isAll()) return@filter true
 
             val configClass = config.clazz.valueOrThrow()
             classData.className == configClass
         }
-        .toList()
-
 
     /**
      * Loads and returns the list of configurations for method hooking.
