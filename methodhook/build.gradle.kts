@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import io.gitlab.arturbosch.detekt.Detekt
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `kotlin-dsl`
@@ -37,6 +38,11 @@ tasks.test {
         setEvents(setOf("passed", "skipped", "failed"))
         showStandardStreams = true
     }
+}
+
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    languageVersion = "1.9"
 }
 
 detekt {
