@@ -4,8 +4,8 @@ import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 import io.github.aleksrychkov.methodhook.asm.InjectorClassVisitor
+import io.github.aleksrychkov.methodhook.config.Config
 import io.github.aleksrychkov.methodhook.config.ConfigLoader
-import io.github.aleksrychkov.methodhook.config.MethodHookConfig
 import io.github.aleksrychkov.methodhook.config.isAll
 import io.github.aleksrychkov.methodhook.config.valueOrThrow
 import org.objectweb.asm.ClassVisitor
@@ -15,8 +15,8 @@ internal abstract class MethodHookAsmClassVisitorFactory :
     AsmClassVisitorFactory<MethodHookInstrumentationParameters> {
 
     companion object {
-        private var cache = Collections.synchronizedMap(LruCache<String, List<MethodHookConfig>?>())
-        private var configs: List<MethodHookConfig> = emptyList()
+        private var cache = Collections.synchronizedMap(LruCache<String, List<Config>?>())
+        private var configs: List<Config> = emptyList()
         private var isConfigLoaded = false
     }
 
@@ -48,7 +48,7 @@ internal abstract class MethodHookAsmClassVisitorFactory :
         return !configs.isNullOrEmpty()
     }
 
-    private fun getConfigForClassData(classData: ClassData): List<MethodHookConfig> = configs()
+    private fun getConfigForClassData(classData: ClassData): List<Config> = configs()
         .asSequence()
         .filter { config ->
             if (config.packageId.isAll()) return@filter true
@@ -77,7 +77,7 @@ internal abstract class MethodHookAsmClassVisitorFactory :
         .toList()
 
 
-    private fun configs(): List<MethodHookConfig> = synchronized(configs) {
+    private fun configs(): List<Config> = synchronized(configs) {
         if (!isConfigLoaded) {
             isConfigLoaded = true
             configs = ConfigLoader().load(parameters.get().configs.get())

@@ -26,7 +26,7 @@ internal class ConfigMapper {
     private val availableTypes = arrayOf(TYPE_DEFAULT, TYPE_TRACE, TYPE_DESCRIPTOR)
 
     @Suppress("UseCheckOrError")
-    fun map(config: Config): MethodHookConfig {
+    fun map(config: Config): io.github.aleksrychkov.methodhook.config.Config {
         config.checkRequiredFields()
 
         val type = config.getString(PATH_TYPE).trim().lowercase()
@@ -42,7 +42,7 @@ internal class ConfigMapper {
         }
     }
 
-    private fun mapTrace(config: Config): MethodHookConfig = MethodHookTraceConfig(
+    private fun mapTrace(config: Config): io.github.aleksrychkov.methodhook.config.Config = TraceConfig(
         packageId = config.stringValue(PATH_PACKAGE),
         superClass = config.stringValue(PATH_SUPER_CLASS),
         interfaces = config.optionalListStringValue(PATH_INTERFACES),
@@ -50,7 +50,7 @@ internal class ConfigMapper {
         methods = config.listStringValue(PATH_METHODS),
     )
 
-    private fun mapDefault(config: Config): MethodHookConfig = MethodHookDefaultConfig(
+    private fun mapDefault(config: Config): io.github.aleksrychkov.methodhook.config.Config = DefaultConfig(
         packageId = config.stringValue(PATH_PACKAGE),
         superClass = config.stringValue(PATH_SUPER_CLASS),
         interfaces = config.optionalListStringValue(PATH_INTERFACES),
@@ -60,7 +60,7 @@ internal class ConfigMapper {
         exitInjectMethod = config.stringOrNull(PATH_EXIT),
     )
 
-    private fun mapDescriptor(config: Config): MethodHookConfig = MethodHookDescriptorConfig(
+    private fun mapDescriptor(config: Config): io.github.aleksrychkov.methodhook.config.Config = DescriptorConfig(
         packageId = config.stringValue(PATH_PACKAGE),
         superClass = config.stringValue(PATH_SUPER_CLASS),
         interfaces = config.optionalListStringValue(PATH_INTERFACES),
@@ -71,33 +71,33 @@ internal class ConfigMapper {
         descriptor = config.stringOrNull(PATH_DESCRIPTOR),
     )
 
-    private fun Config.stringValue(path: String): MethodHookConfigValue<String> {
+    private fun Config.stringValue(path: String): ConfigValue<String> {
         val value = this.getString(path)
         return if (value == VALUE_ALL) {
-            MethodHookConfigValue.All
+            ConfigValue.All
         } else {
-            MethodHookConfigValue.Value(value = value)
+            ConfigValue.Value(value = value)
         }
     }
 
-    private fun Config.listStringValue(path: String): MethodHookConfigValue<List<String>> {
+    private fun Config.listStringValue(path: String): ConfigValue<List<String>> {
         val value = this.getStringList(path)
         return if (value.isEmpty()) {
-            MethodHookConfigValue.All
+            ConfigValue.All
         } else {
-            MethodHookConfigValue.Value(value = value)
+            ConfigValue.Value(value = value)
         }
     }
 
-    private fun Config.optionalListStringValue(path: String): MethodHookConfigValue<List<String>> {
+    private fun Config.optionalListStringValue(path: String): ConfigValue<List<String>> {
         if (!this.hasPath(path)) {
-            return MethodHookConfigValue.All
+            return ConfigValue.All
         }
         val value = this.getStringList(path)
         return if (value.isEmpty()) {
-            MethodHookConfigValue.All
+            ConfigValue.All
         } else {
-            MethodHookConfigValue.Value(value = value)
+            ConfigValue.Value(value = value)
         }
     }
 

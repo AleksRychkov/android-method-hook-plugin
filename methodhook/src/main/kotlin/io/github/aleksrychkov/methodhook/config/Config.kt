@@ -1,52 +1,52 @@
 package io.github.aleksrychkov.methodhook.config
 
-internal sealed interface MethodHookConfig {
-    val packageId: MethodHookConfigValue<String>
-    val superClass: MethodHookConfigValue<String>
-    val interfaces: MethodHookConfigValue<List<String>>
-    val clazz: MethodHookConfigValue<String>
-    val methods: MethodHookConfigValue<List<String>>
+internal sealed interface Config {
+    val packageId: ConfigValue<String>
+    val superClass: ConfigValue<String>
+    val interfaces: ConfigValue<List<String>>
+    val clazz: ConfigValue<String>
+    val methods: ConfigValue<List<String>>
 }
 
-internal data class MethodHookTraceConfig(
-    override val packageId: MethodHookConfigValue<String>,
-    override val superClass: MethodHookConfigValue<String>,
-    override val interfaces: MethodHookConfigValue<List<String>>,
-    override val clazz: MethodHookConfigValue<String>,
-    override val methods: MethodHookConfigValue<List<String>>,
-) : MethodHookConfig
+internal data class TraceConfig(
+    override val packageId: ConfigValue<String>,
+    override val superClass: ConfigValue<String>,
+    override val interfaces: ConfigValue<List<String>>,
+    override val clazz: ConfigValue<String>,
+    override val methods: ConfigValue<List<String>>,
+) : Config
 
-internal data class MethodHookDefaultConfig(
-    override val packageId: MethodHookConfigValue<String>,
-    override val superClass: MethodHookConfigValue<String>,
-    override val interfaces: MethodHookConfigValue<List<String>>,
-    override val clazz: MethodHookConfigValue<String>,
-    override val methods: MethodHookConfigValue<List<String>>,
+internal data class DefaultConfig(
+    override val packageId: ConfigValue<String>,
+    override val superClass: ConfigValue<String>,
+    override val interfaces: ConfigValue<List<String>>,
+    override val clazz: ConfigValue<String>,
+    override val methods: ConfigValue<List<String>>,
     val enterInjectMethod: String? = null,
     val exitInjectMethod: String? = null,
-) : MethodHookConfig
+) : Config
 
-internal data class MethodHookDescriptorConfig(
-    override val packageId: MethodHookConfigValue<String>,
-    override val superClass: MethodHookConfigValue<String>,
-    override val interfaces: MethodHookConfigValue<List<String>>,
-    override val clazz: MethodHookConfigValue<String>,
-    override val methods: MethodHookConfigValue<List<String>>,
+internal data class DescriptorConfig(
+    override val packageId: ConfigValue<String>,
+    override val superClass: ConfigValue<String>,
+    override val interfaces: ConfigValue<List<String>>,
+    override val clazz: ConfigValue<String>,
+    override val methods: ConfigValue<List<String>>,
     val enterInjectMethod: String? = null,
     val exitInjectMethod: String? = null,
     val descriptor: String? = null,
-) : MethodHookConfig
+) : Config
 
-internal sealed interface MethodHookConfigValue<out T> {
-    data object All : MethodHookConfigValue<Nothing>
-    data class Value<T>(val value: T) : MethodHookConfigValue<T>
+internal sealed interface ConfigValue<out T> {
+    data object All : ConfigValue<Nothing>
+    data class Value<T>(val value: T) : ConfigValue<T>
 }
 
-internal fun MethodHookConfigValue<*>.isAll(): Boolean =
-    this is MethodHookConfigValue.All
+internal fun ConfigValue<*>.isAll(): Boolean =
+    this is ConfigValue.All
 
-internal fun <T> MethodHookConfigValue<T>.valueOrNull(): T? =
-    (this as? MethodHookConfigValue.Value<T>)?.value
+internal fun <T> ConfigValue<T>.valueOrNull(): T? =
+    (this as? ConfigValue.Value<T>)?.value
 
-internal fun <T> MethodHookConfigValue<T>.valueOrThrow(): T =
+internal fun <T> ConfigValue<T>.valueOrThrow(): T =
     requireNotNull(this.valueOrNull())

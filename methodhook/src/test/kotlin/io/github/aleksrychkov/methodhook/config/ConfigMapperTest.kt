@@ -46,9 +46,9 @@ internal class ConfigMapperTest {
             // Given
             val config = requireNotNull(configs[input])
             val expected = when (input) {
-                "typeTrace" -> MethodHookTraceConfig::class.java
-                "typeDefault" -> MethodHookDefaultConfig::class.java
-                "typeDescriptor" -> MethodHookDescriptorConfig::class.java
+                "typeTrace" -> TraceConfig::class.java
+                "typeDefault" -> DefaultConfig::class.java
+                "typeDescriptor" -> DescriptorConfig::class.java
                 else -> null
             }
             // When
@@ -84,9 +84,9 @@ internal class ConfigMapperTest {
             // Given
             val config = requireNotNull(configs[input])
             val expected = if (input == "all_package") {
-                MethodHookConfigValue.All
+                ConfigValue.All
             } else {
-                MethodHookConfigValue.Value("package")
+                ConfigValue.Value("package")
             }
             // When
             val actual = mapper.map(config)
@@ -121,9 +121,9 @@ internal class ConfigMapperTest {
             // Given
             val config = requireNotNull(configs[input])
             val expected = if (input == "all_super_class") {
-                MethodHookConfigValue.All
+                ConfigValue.All
             } else {
-                MethodHookConfigValue.Value("superClass")
+                ConfigValue.Value("superClass")
             }
             // When
             val actual = mapper.map(config)
@@ -158,9 +158,9 @@ internal class ConfigMapperTest {
             // Given
             val config = requireNotNull(configs[input])
             val expected = if (input == "all_class") {
-                MethodHookConfigValue.All
+                ConfigValue.All
             } else {
-                MethodHookConfigValue.Value("class")
+                ConfigValue.Value("class")
             }
             // When
             val actual = mapper.map(config)
@@ -195,9 +195,9 @@ internal class ConfigMapperTest {
             // Given
             val config = requireNotNull(configs[input])
             val expected = if (input == "all_methods") {
-                MethodHookConfigValue.All
+                ConfigValue.All
             } else {
-                MethodHookConfigValue.Value(listOf("method"))
+                ConfigValue.Value(listOf("method"))
             }
             // When
             val actual = mapper.map(config)
@@ -232,9 +232,9 @@ internal class ConfigMapperTest {
             // Given
             val config = requireNotNull(configs[input])
             val expected = if (input == "all_interfaces") {
-                MethodHookConfigValue.All
+                ConfigValue.All
             } else {
-                MethodHookConfigValue.Value(listOf("interface"))
+                ConfigValue.Value(listOf("interface"))
             }
             // When
             val actual = mapper.map(config)

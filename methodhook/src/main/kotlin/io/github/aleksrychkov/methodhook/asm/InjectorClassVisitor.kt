@@ -1,7 +1,7 @@
 package io.github.aleksrychkov.methodhook.asm
 
-import io.github.aleksrychkov.methodhook.config.MethodHookConfig
-import io.github.aleksrychkov.methodhook.config.MethodHookDescriptorConfig
+import io.github.aleksrychkov.methodhook.config.Config
+import io.github.aleksrychkov.methodhook.config.DescriptorConfig
 import io.github.aleksrychkov.methodhook.config.isAll
 import io.github.aleksrychkov.methodhook.config.valueOrThrow
 import io.github.aleksrychkov.methodhook.injects.InjectorFactory
@@ -12,7 +12,7 @@ import kotlin.properties.Delegates.notNull
 internal class InjectorClassVisitor(
     api: Int,
     cv: ClassVisitor,
-    private val configs: List<MethodHookConfig>,
+    private val configs: List<Config>,
 ) : ClassVisitor(api, cv) {
 
     private var className: String by notNull()
@@ -44,7 +44,7 @@ internal class InjectorClassVisitor(
                 config.methods.isAll() || config.methods.valueOrThrow().contains(name)
             }
             .filter { config ->
-                if (config is MethodHookDescriptorConfig) {
+                if (config is DescriptorConfig) {
                     config.descriptor == descriptor
                 } else {
                     true

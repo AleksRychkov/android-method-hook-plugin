@@ -9,12 +9,12 @@ internal interface ConfigLoader {
         operator fun invoke(): ConfigLoader = ConfigLoaderImpl()
     }
 
-    fun load(files: List<File>): List<MethodHookConfig>
+    fun load(files: List<File>): List<Config>
 }
 
 private class ConfigLoaderImpl : ConfigLoader {
-    override fun load(files: List<File>): List<MethodHookConfig> {
-        val result = mutableListOf<MethodHookConfig>()
+    override fun load(files: List<File>): List<Config> {
+        val result = mutableListOf<Config>()
         files
             .filter { it.exists() }
             .forEach { file ->

@@ -17,13 +17,13 @@ internal class ConfigLoaderTest {
         val configs = configLoader.load(listOf(configFile))
         // Then
         assertTrue(configs.isNotEmpty())
-        assertTrue(configs.first() is MethodHookDescriptorConfig)
-        val config = configs.first() as MethodHookDescriptorConfig
-        assertEquals(MethodHookConfigValue.Value("package"), config.packageId)
-        assertEquals(MethodHookConfigValue.All, config.superClass)
-        assertEquals(MethodHookConfigValue.Value("class"), config.clazz)
-        assertEquals(MethodHookConfigValue.Value(listOf("test")), config.methods)
-        assertEquals(MethodHookConfigValue.Value(listOf("interface")), config.interfaces)
+        assertTrue(configs.first() is DescriptorConfig)
+        val config = configs.first() as DescriptorConfig
+        assertEquals(ConfigValue.Value("package"), config.packageId)
+        assertEquals(ConfigValue.All, config.superClass)
+        assertEquals(ConfigValue.Value("class"), config.clazz)
+        assertEquals(ConfigValue.Value(listOf("test")), config.methods)
+        assertEquals(ConfigValue.Value(listOf("interface")), config.interfaces)
         assertEquals("()V", config.descriptor)
         assertEquals("enter", config.enterInjectMethod)
         assertEquals("exit", config.exitInjectMethod)
