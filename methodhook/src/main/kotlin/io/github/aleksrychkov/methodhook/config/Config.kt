@@ -42,9 +42,11 @@ internal sealed interface MethodHookConfigValue<out T> {
     data class Value<T>(val value: T) : MethodHookConfigValue<T>
 }
 
+internal fun MethodHookConfigValue<*>.isAll(): Boolean =
+    this is MethodHookConfigValue.All
+
 internal fun <T> MethodHookConfigValue<T>.valueOrNull(): T? =
     (this as? MethodHookConfigValue.Value<T>)?.value
 
 internal fun <T> MethodHookConfigValue<T>.valueOrThrow(): T =
     requireNotNull(this.valueOrNull())
-

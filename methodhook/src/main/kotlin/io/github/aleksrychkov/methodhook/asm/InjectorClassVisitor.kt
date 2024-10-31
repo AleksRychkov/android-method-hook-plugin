@@ -2,7 +2,7 @@ package io.github.aleksrychkov.methodhook.asm
 
 import io.github.aleksrychkov.methodhook.config.MethodHookConfig
 import io.github.aleksrychkov.methodhook.config.MethodHookDescriptorConfig
-import io.github.aleksrychkov.methodhook.config.valueOrNull
+import io.github.aleksrychkov.methodhook.config.isAll
 import io.github.aleksrychkov.methodhook.config.valueOrThrow
 import io.github.aleksrychkov.methodhook.injects.InjectorFactory
 import org.objectweb.asm.ClassVisitor
@@ -41,7 +41,7 @@ internal class InjectorClassVisitor(
         val injectors = configs
             .asSequence()
             .filter { config ->
-                config.methods.valueOrNull() == null || config.methods.valueOrThrow().contains(name)
+                config.methods.isAll() || config.methods.valueOrThrow().contains(name)
             }
             .filter { config ->
                 if (config is MethodHookDescriptorConfig) {

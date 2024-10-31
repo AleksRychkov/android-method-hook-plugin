@@ -6,7 +6,7 @@ import com.android.build.api.instrumentation.ClassData
 import io.github.aleksrychkov.methodhook.asm.InjectorClassVisitor
 import io.github.aleksrychkov.methodhook.config.ConfigLoader
 import io.github.aleksrychkov.methodhook.config.MethodHookConfig
-import io.github.aleksrychkov.methodhook.config.MethodHookConfigValue
+import io.github.aleksrychkov.methodhook.config.isAll
 import io.github.aleksrychkov.methodhook.config.valueOrThrow
 import org.objectweb.asm.ClassVisitor
 import java.util.Collections
@@ -51,26 +51,25 @@ internal abstract class MethodHookAsmClassVisitorFactory :
     private fun getConfigForClassData(classData: ClassData): List<MethodHookConfig> = configs()
         .asSequence()
         .filter { config ->
-            if (config.packageId == MethodHookConfigValue.All) return@filter true
+            if (config.packageId.isAll()) return@filter true
 
             val configPackage = config.packageId.valueOrThrow()
             classData.className.startsWith("$configPackage.")
         }
         .filter { config ->
-            if (config.superClass == MethodHookConfigValue.All) return@filter true
+            if (config.superClass.isAll()) return@filter true
 
             val configSuperClass = config.superClass.valueOrThrow()
             classData.superClasses.contains(configSuperClass)
         }
         .filter { config ->
-            if (config.interfaces == MethodHookConfigValue.All) return@filter true
+            if (config.interfaces.isAll()) return@filter true
 
             val configInterfaces = config.interfaces.valueOrThrow()
-
             classData.interfaces.intersect(configInterfaces.toSet()).isNotEmpty()
         }
         .filter { config ->
-            if (config.clazz == MethodHookConfigValue.All) return@filter true
+            if (config.clazz.isAll()) return@filter true
 
             val configClass = config.clazz.valueOrThrow()
             classData.className == configClass
