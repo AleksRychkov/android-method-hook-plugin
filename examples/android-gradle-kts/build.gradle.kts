@@ -48,6 +48,7 @@ androidMethodHook {
             addConfig("./methodhook/descriptor.conf")
             addConfig("./methodhook/okhttp.conf")
             addConfig("./methodhook/auto_trace.conf")
+            addConfig("./methodhook/frame_counter.conf")
         }
     }
 }
