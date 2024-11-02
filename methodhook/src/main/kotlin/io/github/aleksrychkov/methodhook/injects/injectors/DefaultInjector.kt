@@ -27,7 +27,7 @@ internal class DefaultInjector(
     override fun onEnter(context: InjectorContext, mv: MethodVisitor) = with(mv) {
         if (enterInjectMethod == null) return@with
 
-        visitLdcInsn(context.className)
+        visitLdcInsn(context.className.replace("/", "."))
         visitLdcInsn(context.methodName)
         visitLdcInsn(context.methodDescriptor)
 
@@ -48,7 +48,7 @@ internal class DefaultInjector(
     ) = with(mv) {
         if (exitInjectMethod == null) return@with
 
-        visitLdcInsn(context.className)
+        visitLdcInsn(context.className.replace("/", "."))
         visitLdcInsn(context.methodName)
         visitLdcInsn(context.methodDescriptor)
 

@@ -46,8 +46,10 @@ androidMethodHook {
     configs {
         create("debug") {
             addConfig("./methodhook/descriptor.conf")
-            addConfig("./methodhook/okhttp.conf")
+            addConfig("./methodhook/default.conf")
             addConfig("./methodhook/auto_trace.conf")
+
+            addConfig("./methodhook/okhttp.conf")
             addConfig("./methodhook/frame_counter.conf")
         }
     }
