@@ -7,6 +7,9 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import javax.inject.Inject
 
+/**
+ * Configuration class for the MethodHook Gradle plugin.
+ */
 abstract class MethodHookPluginConfig @Inject constructor(
     objects: ObjectFactory
 ) {

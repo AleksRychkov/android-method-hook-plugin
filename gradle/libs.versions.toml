@@ -3,11 +3,11 @@ agp = "8.2.2"
 appcompat = "1.6.1"
 asm = "9.6"
 detekt = "1.23.5"
-kotlin = "1.9.22"
+kotlin = "1.9.10"
 typesafe = "1.4.2"
 junit = "5.7.1"
 plugin-publish = "1.2.1"
-
+okhttp = "4.12.0"
 
 [plugins]
 agp = { id = "com.android.application", version.ref = "agp" }
@@ -15,7 +15,7 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "plugin-publish" }
-methodhook = { id = "io.github.aleksrychkov.methodhook", version = "0.1" }
+methodhook = { id = "io.github.aleksrychkov.methodhook", version = "0.2" }
 
 
 [libraries]
@@ -32,6 +32,7 @@ typesafe = { group = "com.typesafe", name = "config", version.ref = "typesafe" }
 
 juint = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
 
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 
 [bundles]
 asm = ["asm", "asm-commons", "asm-util"]

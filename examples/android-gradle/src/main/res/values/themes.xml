@@ -1,8 +1,0 @@
-<resources>
-    <!-- Base application theme. -->
-    <style name="Theme.Androidgradlemethodinception" parent="Theme.AppCompat.DayNight">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <!-- Customize your theme here. -->
-    </style>
-</resources>

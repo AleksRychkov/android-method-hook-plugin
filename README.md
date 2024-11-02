@@ -21,25 +21,23 @@ plugins {
 ### Quick start
 
 Create `methodhook_activity.conf` file to instruct plugin what and where to inject calls. You can
-place it adjacent to
-application's build.gradle[.kts] file
+place it adjacent to application's build.gradle[.kts] file
 
 ```conf
 activity {
+    type = "default"
+    package = "*"
     superClass = "android.app.Activity"
-    methods = [
-        "onCreate"        
-    ]
-    packageId = "org.example"
-    beginMethodWith = "org.example.MethodHook.start"
-    endMethodWith = "org.example.MethodHook.end"
+    interfaces = []
+    class = "*"
+    methods = [ "onCreate" ]
+    enter = "org.example.MethodHook.enter"
+    exit = "org.example.MethodHook.exit"
 }
 ```
 
 Add plugin's configuration to an Android application's `build.gradle[.kts]` file. In `addConfig`
-method specify a path
-to
-a created `methodhook_activity.conf` file previously
+method specify a path to a created `methodhook_activity.conf` file previously
 
 ```gradle
 // build.gradle.kts
@@ -66,21 +64,22 @@ package org.example
 
 object MethodHook {
     @JvmStatic
-    fun start(runtimeClazz: String, clazz: String, method: String) {
-        println("MethodHook::start::$runtimeClazz::$clazz::$method")
+    fun enter(clazz: String, method: String, descriptor: String) {
+        println("MethodHook::enter::$clazz.$method.$descriptor")
     }
 
     @JvmStatic
-    fun end(runtimeClazz: String, clazz: String, method: String) {
-        println("MethodHook::end::$runtimeClazz::$clazz::$method")
+    fun exit(clazz: String, method: String, descriptor: String) {
+        println("MethodHook::exit::$clazz.$method.$descriptor")
     }
 }
 ```
 
 Build project's `debug` buildType.
-Now, `onCreate(savedInstanceState: Bundle?)` method of all activities defined in `org.example`
-package should be
-instructed with `MethodHook::start` and `MethodHook::end` calls.
+Now, `onCreate(savedInstanceState: Bundle?)` method of all activities should be
+instructed with `MethodHook::enter` and `MethodHook::exit` calls.
+
+![!methodhook example](./doc/methodhook_example.png)
 
 ### Example
 
@@ -107,53 +106,72 @@ You can define multiple configs inside one file. Start a config with a name
 
 ```config
 activity {
-    superClass = "android.app.Activity"
-    methods = [
-        "onCreate"        
-    ]
-    packageId = "org.example"
-    beginMethodWith = "org.example.MethodHook.start"
-    endMethodWith = "org.example.MethodHook.end"
+    ...
 }
 frgament {
-    exactClass = "org.example.SomeFragment"
-    methods = [
-        "onResume"        
-    ]
-    beginMethodWith = "org.example.MethodHook.start"
-    endMethodWith = "org.example.MethodHook.end"
+    ...
 }
 ```
 
-Each config supports following options:
+#### Config file parameters
 
-* `superClass`: Specifies the parent class (__canonical name__) for which the plugin should target
-  methods in its
-  subclasses, e.g. `android.app.Activity`. Must not be defined along with `exactClass`.
-* `exactClass`: Specifies the exact class (__canonical name__) for which the plugin should target
-  methods,
-  `e.g. org.example.SomeClass`. Must not be defined along with `superClass`.
-* `methods`: Specifies an array of methods (identified by their names) where the plugin will
-  inject additional code, e.g. `onCreate`.
-* `beginMethodWith`: Specifies a reference to a method to be injected at the beginning of instructed
-  methods,
-  e.g. `org.example.MethodHook.start`.
-* `endMethodWith`: Specifies a reference to a method to be injected at the end of instructed
-  methods,
-  e.g. `org.example.MethodHook.end`.
-* `packageId`: Specifies the package name that identifies the group of classes where the plugin will
-  target methods for
-  injection, e.g. `org.example`.  
-  Not required, if not defined, the config will be applied to all files in your project, including
-  third-party libraries
+* `type`: Specifies type of instrumentation to apply.
+    * **Required**
+    * Variants:
+        * __default__ - instrument methods with `enter` and `exit` static method calls, with following arguments:
+          `className: String`, `methodName: String`, `methodDescriptor: String`.
+        * __trace__ - instrument methods with `android.os.Trace.beginSection` and `android.os.Trace.endSection` calls.
+        * __descriptor__ - instrument methods with `enter` and `exit` static method calls. `enter` method must have same
+          list of arguments as instrumented method, `exit` must have single nullable argument of `android.lang.Object`(
+          `kotlin.Any`) type.
 
-> [!IMPORTANT]
-> * Each config must have either `superClass` or `exactClass` option, but not both.
-> * Do not duplicate configs with same `superClass` or `exactClass` option.
-> * Each config must have `methods` option.
-> * Each config must have at least one of the options (or both): `beginMethodWith`, `endMethodWith`.
-> * Bear in mind that, a class, targeted by the plugin, must be associated with only one config.
-    Otherwise, you will get an error.
+* `package`: Specifies the package name that identifies the group of classes where the plugin will target methods for
+  injection.
+    * **Required**
+    * Variants:
+        * /* - any package.
+        * __package__, e.g. `"org.example"`
+
+
+* `superClass`: Specifies the parent class (__canonical name__) for which the plugin should target methods in its
+  subclasses.
+    * **Required**
+    * Variants:
+        * \* - any parent class or none.
+        * __canonical name__, e.g. `"android.app.Activity"`.
+
+* `interfaces`: Specifies a list of interfaces (by __canonical name__). If a class implements any of the specified
+  interfaces, its methods will be instrumented.
+    * **Required**
+    * Variants:
+        * \* - any interface or none.
+        * __canonical name__, e.g. `[ "java.util.RandomAccess" ]`.
+
+* `class`: Specifies the exact class (__canonical name__) for which the plugin should target methods.
+    * **Required**
+    * Variants:
+        * \* - any class.
+        * __canonical name__, e.g. `"org.example.SomeClass" `.
+
+* `methods`: Specifies an array of methods (identified by their names) where the plugin will inject additional code.
+    * **Required**
+    * Variants:
+        * \* - all methods including constructor.
+        * __method name__ - exact method name to be instrumented, e.g. ` [ "onCreate" ]`.
+
+* `descriptor`: Specifies instrumented method descriptor.
+    * **Not required**
+    * Variants:
+        * __method descriptor__, e.g. `"(Landroid/content/Context;)V"`.
+
+* `enter`: Specifies a reference to a method to be injected at the beginning of instructed methods.
+    * **Not required**
+    * Variants:
+        * __static method reference__, e.g. `org.example.MethodHook.enter`
+* `exit`: Specifies a reference to a method to be injected at the end of instructed methods.
+    * **Not required**
+    * Variants:
+        * __static method reference__, e.g. `org.example.MethodHook.exit`
 
 #### Plugin configuration
 
@@ -190,67 +208,19 @@ androidMethodHook {
 
 The `androidMethodHook` configuration supports next options:
 
-* `forceLogging`: Enables info logs of the plugin. Same as if executing gradle command with `--info`
-  flag,
-  e.g. `./gradlew assembleDebug --info`. Default value is `false`.
-* `configs`: Creates plugin's config for specific build variant. The name of config must be the same
-  as name of build
-  variant, e.g. buildType: `debug`, or if you have productFlavor named `demo`: `demoDebug`. You can
-  have separate sets
+* `forceLogging`: Enables info logs of the plugin. Same as if executing gradle command with `--info` flag, e.g.
+  `./gradlew assembleDebug --info`. Default value is `false`.
+
+* `configs`: Creates plugin's config for specific build variant. The name of config must be the same as name of build
+  variant, e.g. buildType: `debug`, or if you have productFlavor named `demo`: `demoDebug`. You can have separate sets
   of config for different build variants.
     * `addConfig`: Adds relative path to a config file.
 
-#### Inject method calls
+## References
 
-Plugin allows to inject a single method call to the beginning or the end of a target method.
-Injected method must be `public static void` and have three `String` arguments.  
-Create a separate method to be injected at the beginning and end of the target method
-
-```kotlin
-@file:Suppress("UNUSED_PARAMETER")
-
-package org.example
-
-object MethodHook {
-    @JvmStatic
-    fun start(runtimeClazz: String, clazz: String, method: String) {
-        // some logic to be executed at the beginning of a [method]
-    }
-
-    @JvmStatic
-    fun end(runtimeClazz: String, clazz: String, method: String) {
-        // some logic to be executed at the end of a [method]
-    }
-}
-```
-
-```java
-package org.example;
-
-public class MethodHook {
-    public static void start(String runtimeClazz, String clazz, String method) {
-        // some logic to be executed at the beginning of a [method]
-    }
-
-    public static void end(String runtimeClazz, String clazz, String method) {
-        // some logic to be executed at the end of a [method]
-    }
-}
-```
-
-* first argument is a runtime class, `this.getClass().getName()`, e.g. `org.example.MainActivity`.
-* second argument is an actual class where method was called, e.g. `org.example.AbstractActivity`.
-* third argument is a method name, arguments, return type, e.g. `onCreate(Bundle)->void`.
-
-Specify created methods in config
-
-```conf
-activity {
-    …
-    beginMethodWith = "org.example.MethodHook.start"
-    endMethodWith = "org.example.MethodHook.end"
-}
-```
+* [Using the ASM framework to implement common Java bytecode transformation patterns](https://lsieun.github.io/assets/pdf/asm-transformations.pdf)
+* [ASM framework - Eugene Kuleshov](https://wiki.jvmlangsummit.com/pdf/23_Kuleshov_asm.pdf)
+* [ASM guide](https://asm.ow2.io/asm4-guide.pdf)
 
 ## License
 
