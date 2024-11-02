@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "io.github.aleksrychkov"
-version = "0.1"
+version = "0.2"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
