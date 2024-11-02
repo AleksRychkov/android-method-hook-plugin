@@ -38,7 +38,7 @@ internal class ConfigMapper {
      *
      * This method validates the configuration and checks for required fields.
      * It determines the type of configuration and calls the appropriate mapping function
-     * to create and return a corresponding [Config] instance.</p>
+     * to create and return a corresponding [Config] instance.
      *
      * @param config The configuration to be mapped.
      * @return A mapped [Config] instance based on the provided configuration.
