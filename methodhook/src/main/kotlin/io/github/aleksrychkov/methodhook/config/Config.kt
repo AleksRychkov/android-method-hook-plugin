@@ -27,6 +27,7 @@ internal data class TraceConfig(
     override val interfaces: ConfigValue<List<String>>,
     override val clazz: ConfigValue<String>,
     override val methods: ConfigValue<List<String>>,
+    val traceMsgPrefix: String? = null
 ) : Config
 
 /**

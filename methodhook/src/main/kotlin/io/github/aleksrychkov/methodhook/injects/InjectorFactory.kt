@@ -38,7 +38,9 @@ internal object InjectorFactory {
                         exitInjectMethod = config.exitInjectMethod,
                     )
 
-                    is TraceConfig -> TraceInjector
+                    is TraceConfig -> TraceInjector(
+                        msgPrefix = config.traceMsgPrefix,
+                    )
                 }
             }
             .toSet()

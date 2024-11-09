@@ -21,6 +21,7 @@ internal class ConfigMapper {
         const val PATH_ENTER = "enter"
         const val PATH_EXIT = "exit"
         const val PATH_DESCRIPTOR = "descriptor"
+        const val PATH_TRACE_PREFIX = "msgPrefix"
 
         // Supported configuration types
         const val TYPE_TRACE = "trace"
@@ -68,6 +69,7 @@ internal class ConfigMapper {
             interfaces = config.optionalListStringValue(PATH_INTERFACES),
             clazz = config.stringValue(PATH_CLASS),
             methods = config.listStringValue(PATH_METHODS),
+            traceMsgPrefix = config.stringOrNull(PATH_TRACE_PREFIX),
         )
 
     private fun mapDefault(config: TypeSafeConfig): Config =
