@@ -14,16 +14,24 @@ import org.objectweb.asm.commons.AdviceAdapter
  * allows tracking the execution of methods in an Android application. When a target
  * method is entered, it begins a new trace section, and when the method is exited,
  * it ends the trace section.
+ *
+ * @param msgPrefix - Prefix of trace's section name.
  */
-internal object TraceInjector : Injector {
+internal class TraceInjector(
+    private val msgPrefix: String? = null
+) : Injector {
 
-    private const val TRACE_MSG_LENGTH = 127
-    private const val TRACE_MSG_PREFIX = "=>"
+    private companion object {
+        const val TRACE_MSG_LENGTH = 127
+        const val TRACE_MSG_PREFIX = ""
+    }
 
     override fun onEnter(context: InjectorContext, mv: MethodVisitor) {
+        val prefix = msgPrefix ?: TRACE_MSG_PREFIX
         val className = context.className.substringAfterLast("/")
-        val msg = "$TRACE_MSG_PREFIX${className}.${context.methodName}${context.methodDescriptor}"
-            .takeLast(TRACE_MSG_LENGTH)
+        val method = context.methodName
+        val descriptor = context.methodDescriptor.stripPackages()
+        val msg = "${prefix}${className}.${method}${descriptor}".take(TRACE_MSG_LENGTH)
 
         mv.visitLdcInsn(msg)
         mv.visitMethodInsn(
@@ -33,7 +41,6 @@ internal object TraceInjector : Injector {
             "(Ljava/lang/String;)V",
             false,
         )
-
     }
 
     override fun onExit(
@@ -49,5 +56,11 @@ internal object TraceInjector : Injector {
             "()V",
             false,
         )
+    }
+
+    private fun String.stripPackages(): String {
+        return this.replace(Regex("L[^;]+/"), "L")
+            .replace("(Ljava/lang/Void;)", "()")
+            .replace("()V", "()")
     }
 }

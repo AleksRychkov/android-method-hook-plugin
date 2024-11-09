@@ -171,7 +171,10 @@ frgament {
 * `exit`: Specifies a reference to a method to be injected at the end of instructed methods.
     * **Not required**
     * Variants:
-        * __static method reference__, e.g. `org.example.MethodHook.exit`
+        * __static method reference__, e.g. `org.example.MethodHook.exit`.
+* `msgPrefix`: Specifies prefix of trace message, `android.os.Trace.beginSection("${msgPrefix}clazzMethod.descriptor")`
+    * **Not required**
+    * Has effect only for `type: "trace"`
 
 #### Plugin configuration
 
