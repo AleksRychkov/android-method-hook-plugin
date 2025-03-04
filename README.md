@@ -129,7 +129,7 @@ frgament {
   injection.
     * **Required**
     * Variants:
-        * /* - any package.
+        * \* - any package.
         * __package__, e.g. `"org.example"`
 
 
